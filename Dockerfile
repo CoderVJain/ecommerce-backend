@@ -2,11 +2,7 @@
 FROM jelastic/maven:3.9.5-openjdk-21 AS build
 WORKDIR /app
 
-# Copy pom.xml first for caching
-COPY pom.xml .
-
-# Copy source code
-COPY src ./src
+COPY . .
 
 # Build the jar
 RUN mvn clean package -DskipTests
