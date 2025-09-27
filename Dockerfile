@@ -1,9 +1,12 @@
 # Stage 1: Build the application
-FROM eclipse-temurin:21-jdk-jammy AS build
-COPY . .
-RUN mvm clean package -DskipTests
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 
-FROM openjdk:21-jdk-slim
+COPY . .
+RUN mvn clean package -DskipTests
+
+# Stage 2: Run the application
+FROM eclipse-temurin:21-jdk-jammy
+
 COPY --from=build /target/E-CommerceSpring-0.0.1-SNAPSHOT.jar application.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "application.jar"]
