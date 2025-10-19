@@ -37,7 +37,8 @@ public class AppConfig {
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                         CorsConfiguration config = new CorsConfiguration();
                         config.setAllowedOrigins(Arrays.asList(
-                                "https://codervjain-ecommerce.vercel.app/"
+                                "https://codervjain-ecommerce.vercel.app/",
+                                "http://localhost:5173"
 
                         ));
                         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));

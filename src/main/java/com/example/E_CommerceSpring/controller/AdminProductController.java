@@ -28,13 +28,24 @@ public class AdminProductController {
         return new ResponseEntity<Product>(product, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{productId}/delete")
-    public ResponseEntity<ApiResponse> deleteProduct (@PathVariable Long productId) throws ProductException {
-        productService.deleteProduct(productId);
-        ApiResponse res = new ApiResponse();
-        res.setMessage("Product Deleted Successfully with id: " + productId);
-        res.setStatus(true);
-        return new ResponseEntity<ApiResponse>(res, HttpStatus.OK);
+    @DeleteMapping("/softDelete/{id}")
+    public ResponseEntity<String> softDeleteProduct(@PathVariable Long id) {
+        try {
+            productService.softDeleteProduct(id);
+            return ResponseEntity.ok("✅ Product soft-deleted successfully (set inactive).");
+        } catch (ProductException e) {
+            return ResponseEntity.badRequest().body("❌ " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/permanentDelete/{id}")
+    public ResponseEntity<String> deleteProductPermanently(@PathVariable Long id) {
+        try {
+            productService.deleteProductPermanently(id);
+            return ResponseEntity.ok("🗑️ Product permanently deleted from database.");
+        } catch (ProductException e) {
+            return ResponseEntity.badRequest().body("❌ " + e.getMessage());
+        }
     }
 
     @GetMapping("/all")
@@ -74,5 +85,24 @@ public class AdminProductController {
         res.setStatus(true);
         return new ResponseEntity<ApiResponse>(res, HttpStatus.CREATED);
     }
+
+    @GetMapping("/inactive")
+    public ResponseEntity<List<Product>> getInactiveProducts() {
+        List<Product> inactiveProducts = productService.getInactiveProducts();
+        return new ResponseEntity<List<Product>>(inactiveProducts,HttpStatus.OK);
+    }
+
+    @PutMapping("/{productId}/activate")
+    public ResponseEntity<ApiResponse> activateProduct(@PathVariable Long productId) {
+        try {
+            Product activatedProduct = productService.makeProductActive(productId);
+            ApiResponse response = new ApiResponse("Product activated successfully", true);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (ProductException e) {
+            ApiResponse response = new ApiResponse(e.getMessage(), false);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
 

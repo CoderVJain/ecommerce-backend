@@ -49,12 +49,15 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @Column(name = "is_active")
+    private Boolean active = true;
+
     private LocalDateTime createdAt;
 
     public Product() {
     }
 
-    public Product(Long id, String title, String description, int price, int discountedPrice, int discountPercent, int quantity, String brand, String color, Set<Size> sizes, String imageUrl, List<Rating> ratings, List<Review> reviews, int numRatings, Category category, LocalDateTime createdAt) {
+    public Product(Long id, String title, String description, int price, int discountedPrice, int discountPercent, int quantity, String brand, String color, Set<Size> sizes, String imageUrl, List<Rating> ratings, List<Review> reviews, int numRatings, Category category, LocalDateTime createdAt,Boolean active) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -71,6 +74,7 @@ public class Product {
         this.numRatings = numRatings;
         this.category = category;
         this.createdAt = createdAt;
+        this.active = active;
     }
 
     public Long getId() {
@@ -199,5 +203,17 @@ public class Product {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Boolean isActive() {
+        return active != null ? active : true;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }

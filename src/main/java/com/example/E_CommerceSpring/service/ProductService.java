@@ -17,9 +17,12 @@ public interface ProductService {
                                        String sort, String stock, Integer pageNumber, Integer pageSize);
     public List<Product> getProductByCategory(String category);
     public Product getProductById(Long id) throws ProductException;
-    public void deleteProduct(Long id) throws ProductException;
+    void softDeleteProduct(Long id) throws ProductException;
+    void deleteProductPermanently(Long id) throws ProductException;
     public Product updateProduct(Long id, Product req) throws ProductException;
     public Map<String, List<String>> getFilterOptions(String category);
+    public List<Product> getInactiveProducts();
+    public Product makeProductActive(Long productId) throws ProductException;
 
 
 }

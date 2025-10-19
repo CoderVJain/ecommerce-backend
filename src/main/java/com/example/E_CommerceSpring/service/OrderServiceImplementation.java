@@ -64,7 +64,6 @@ public class OrderServiceImplementation implements OrderService {
         order.setTotalDiscountedPrice(cart.getTotalDiscountedPrice());
         order.setDiscount(cart.getDiscount());
         order.setTotalItems(cart.getTotalItem());
-        order.setDeliveryDate(LocalDateTime.now().plusDays(5));
         order.setOrderDate(LocalDateTime.now());
         order.setOrderStatus("PENDING");
 
@@ -129,6 +128,7 @@ public class OrderServiceImplementation implements OrderService {
     public Order shippedOrder(Long id) throws OrderException {
         Order order = getOrderById(id);
         order.setOrderStatus("SHIPPED");
+        order.setDeliveryDate(LocalDateTime.now().plusDays(3));
         return orderRepository.save(order);
     }
 
