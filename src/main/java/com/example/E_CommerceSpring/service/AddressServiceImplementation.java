@@ -17,6 +17,25 @@ public class AddressServiceImplementation implements AddressService {
     @Override
     public Address saveAddress(User user, Address address) {
         address.setUser(user);
+
+        // Prevent identical duplicate addresses for same user
+        List<Address> existingAddresses = addressRepository.findByUser(user);
+        boolean alreadyExists = existingAddresses.stream().anyMatch(a ->
+                a.getStreetAddress().equalsIgnoreCase(address.getStreetAddress()) &&
+                        a.getCity().equalsIgnoreCase(address.getCity()) &&
+                        a.getState().equalsIgnoreCase(address.getState()) &&
+                        a.getZipCode().equalsIgnoreCase(address.getZipCode())
+        );
+
+        if (alreadyExists) {
+            return existingAddresses.stream().filter(a ->
+                    a.getStreetAddress().equalsIgnoreCase(address.getStreetAddress()) &&
+                            a.getCity().equalsIgnoreCase(address.getCity()) &&
+                            a.getState().equalsIgnoreCase(address.getState()) &&
+                            a.getZipCode().equalsIgnoreCase(address.getZipCode())
+            ).findFirst().get();
+        }
+
         return addressRepository.save(address);
     }
 

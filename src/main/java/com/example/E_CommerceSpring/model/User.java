@@ -1,6 +1,7 @@
 package com.example.E_CommerceSpring.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -20,7 +21,8 @@ public class User {
     private String role;
     private String mobile;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("user")
     private List<Address> address = new ArrayList<>();
 
     @ElementCollection
