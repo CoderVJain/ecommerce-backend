@@ -30,12 +30,18 @@ public class OrderItem {
 
     private Long userId;
 
+    private String orderStatus;
+
     private LocalDateTime deliveryDate;
+
+
 
     public OrderItem() {
     }
 
-    public OrderItem(Long id, Order order, Product product, String size, int quantity, Integer price, Integer discountedPrice, Long userId, LocalDateTime deliveryDate) {
+    public OrderItem(Long id, Order order, Product product, String size, int quantity,
+                     Integer price, Integer discountedPrice, Long userId,
+                     LocalDateTime deliveryDate, String orderStatus) {
         this.id = id;
         this.order = order;
         this.product = product;
@@ -45,6 +51,16 @@ public class OrderItem {
         this.discountedPrice = discountedPrice;
         this.userId = userId;
         this.deliveryDate = deliveryDate;
+        this.orderStatus = orderStatus;
+    }
+
+    // ✅ Getter & Setter
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public Long getId() {

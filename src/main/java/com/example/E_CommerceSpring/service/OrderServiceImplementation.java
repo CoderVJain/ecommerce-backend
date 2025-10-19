@@ -52,6 +52,7 @@ public class OrderServiceImplementation implements OrderService {
             orderItem.setSize(item.getSize());
             orderItem.setUserId(item.getUserId());
             orderItem.setDiscountedPrice(item.getDiscountedPrice());
+            orderItem.setOrderStatus("PENDING");
             orderItems.add(orderItem);
         }
 
@@ -113,7 +114,15 @@ public class OrderServiceImplementation implements OrderService {
     public Order placedOrder(Long id) throws OrderException {
         Order order = getOrderById(id);
         order.setOrderStatus("PLACED");
-        order.getPaymentDetails().setStatus("COMPLETED");
+
+        if (order.getPaymentDetails() != null) {
+            order.getPaymentDetails().setStatus("COMPLETED");
+        }
+
+        // ✅ Update all order items too
+        order.getOrderItems().forEach(item -> item.setOrderStatus("PLACED"));
+        orderItemRepository.saveAll(order.getOrderItems());
+
         return orderRepository.save(order);
     }
 
@@ -121,6 +130,11 @@ public class OrderServiceImplementation implements OrderService {
     public Order confirmedOrder(Long id) throws OrderException {
         Order order = getOrderById(id);
         order.setOrderStatus("CONFIRMED");
+
+        // ✅ Update all order items too
+        order.getOrderItems().forEach(item -> item.setOrderStatus("CONFIRMED"));
+        orderItemRepository.saveAll(order.getOrderItems());
+
         return orderRepository.save(order);
     }
 
@@ -129,6 +143,11 @@ public class OrderServiceImplementation implements OrderService {
         Order order = getOrderById(id);
         order.setOrderStatus("SHIPPED");
         order.setDeliveryDate(LocalDateTime.now().plusDays(3));
+
+        // ✅ Update all order items too
+        order.getOrderItems().forEach(item -> item.setOrderStatus("SHIPPED"));
+        orderItemRepository.saveAll(order.getOrderItems());
+
         return orderRepository.save(order);
     }
 
@@ -136,6 +155,11 @@ public class OrderServiceImplementation implements OrderService {
     public Order deliveredOrder(Long id) throws OrderException {
         Order order = getOrderById(id);
         order.setOrderStatus("DELIVERED");
+
+        // ✅ Update all order items too
+        order.getOrderItems().forEach(item -> item.setOrderStatus("DELIVERED"));
+        orderItemRepository.saveAll(order.getOrderItems());
+
         return orderRepository.save(order);
     }
 
@@ -143,8 +167,14 @@ public class OrderServiceImplementation implements OrderService {
     public Order cancelledOrder(Long id) throws OrderException {
         Order order = getOrderById(id);
         order.setOrderStatus("CANCELLED");
+
+        // ✅ Update all order items too
+        order.getOrderItems().forEach(item -> item.setOrderStatus("CANCELLED"));
+        orderItemRepository.saveAll(order.getOrderItems());
+
         return orderRepository.save(order);
     }
+
 
     @Override
     public List<Order> getAllOrders() {
@@ -154,5 +184,6 @@ public class OrderServiceImplementation implements OrderService {
     @Override
     public void deleteOrder(Long id) throws OrderException {
         orderRepository.deleteById(id);
+
     }
 }
