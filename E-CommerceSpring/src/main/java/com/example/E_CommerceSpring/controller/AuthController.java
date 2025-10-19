@@ -90,8 +90,8 @@ public class AuthController {
         String token = jwtProvider.generateToken(authentication);
 
         // Return the successful response
-        AuthResponse authResponse = new AuthResponse(token, "User signed up successfully");
-        return new ResponseEntity<AuthResponse>(authResponse, HttpStatus.CREATED);
+        AuthResponse authResponse = new AuthResponse(token, "User signed up successfully", savedUser);
+        return new ResponseEntity<AuthResponse>(authResponse, HttpStatus.CREATED) ;
     }
 
     @PostMapping("/admin/signup")
@@ -122,14 +122,14 @@ public class AuthController {
         newUser.setLastName(lastName);
         newUser.setRole("ADMIN");
 
-        userRepository.save(newUser);
+        User savedUser = userRepository.save(newUser);
 
         Authentication auth = new UsernamePasswordAuthenticationToken(email, password);
         SecurityContextHolder.getContext().setAuthentication(auth);
 
         String token = jwtProvider.generateToken(auth);
 
-        AuthResponse authResponse = new AuthResponse(token, "Admin sign up successfully");
+        AuthResponse authResponse = new AuthResponse(token, "Admin sign up successfully",savedUser);
         return new ResponseEntity<AuthResponse>(authResponse, HttpStatus.CREATED);
     }
 
@@ -168,8 +168,9 @@ public class AuthController {
             SecurityContextHolder.getContext().setAuthentication(auth);
 
             String token = jwtProvider.generateToken(auth);
-
-            return ResponseEntity.ok(new AuthResponse(token, "User logged in successfully"));
+            User loggedInUser = userRepository.findByEmail(email);
+            AuthResponse authResponse = new AuthResponse(token, "User logged in successfully", loggedInUser);
+            return ResponseEntity.ok(authResponse);
         } catch (AuthenticationException e) {
             // wrong email or password
             return ResponseEntity

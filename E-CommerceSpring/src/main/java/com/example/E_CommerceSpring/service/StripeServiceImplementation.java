@@ -42,8 +42,8 @@ public class StripeServiceImplementation implements StripeService {
             SessionCreateParams params =
                     SessionCreateParams.builder()
                             .setMode(SessionCreateParams.Mode.PAYMENT)
-                            .setSuccessUrl("https://codervjain-ecommerce.vercel.app/payment-success?session_id={CHECKOUT_SESSION_ID}&order_id=" + orderId)
-                            .setCancelUrl("https://codervjain-ecommerce.vercel.app/cart")
+                            .setSuccessUrl("http://localhost:5173/payment-success?session_id={CHECKOUT_SESSION_ID}&order_id=" + orderId)
+                            .setCancelUrl("http://localhost:5173/cart")
                             .addLineItem(lineItem)
                             .build();
 
