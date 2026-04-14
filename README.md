@@ -47,20 +47,19 @@ git clone https://github.com/CoderVJain/ecommerce-backend.git
 cd ecommerce-backend
 ```
 
-### 2. Configure the Database
-Create a MySQL database for the project (the default configured name is `ecommerceSpring`):
-```sql
-CREATE DATABASE ecommerceSpring;
-```
+### 2. Configure the Environment Variables & Keys
+Since the project relies on environment variables, set up the following environment variables (or supply them in your IDE/system):
 
-The `src/main/resources/application.properties` is already configured with defaults, but you can override them via Environment Variables if needed:
-*   `PORT` (Default: 5454)
-*   `DB_HOST` (Default: localhost)
-*   `DB_PORT` (Default: 3306)
-*   `DB_NAME` (Default: ecommerceSpring)
-*   `DB_PASSWORD` (Default: _VarRkshv@123)
+*   `PORT=5454` (or your preferred server port)
+*   `DB_HOST=localhost`
+*   `DB_PORT=3306`
+*   `DB_NAME=ecommerceSpring` (Create this database in MySQL first: `CREATE DATABASE ecommerceSpring;`)
+*   `DB_USERNAME=root` (Your MySQL username)
+*   `DB_PASSWORD=your_mysql_password`
 
-*Note: Your `stripe.secretKey` and JWT secret (`JwtConstant.java`) are already present in the code for testing purposes.*
+**Required Secrets:**
+1. **Stripe API Key:** Open `src/main/resources/application.properties` and replace `<your-stripe-secret-key>` with your actual Stripe Secret Key.
+2. **JWT Secret:** Open `src/main/java/com/example/E_CommerceSpring/config/JwtConstant.java` and replace `[ENCRYPTION_KEY]` with a secure, random string that will be used to sign your JSON Web Tokens.
 
 ### 3. Build and Run the Application
 You can use the included Maven wrapper to build and run the application:
@@ -69,12 +68,11 @@ You can use the included Maven wrapper to build and run the application:
 # Clean and install dependencies
 ./mvnw clean install
 
-# Run the Spring Boot application
+# Run the Spring Boot application (ensure env variables are set)
 ./mvnw spring-boot:run
 ```
 
-By default, the server will start on port `5454`.
-Base API URL will be: `http://localhost:5454/`
+By default (if you set `PORT=5454`), the base API URL will be: `http://localhost:5454/`
 
 ## 🔐 API Endpoints Overview
 
