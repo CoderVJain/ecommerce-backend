@@ -48,20 +48,19 @@ cd ecommerce-backend
 ```
 
 ### 2. Configure the Database
-Create a MySQL database for the project:
+Create a MySQL database for the project (the default configured name is `ecommerceSpring`):
 ```sql
-CREATE DATABASE ecommerce_db;
+CREATE DATABASE ecommerceSpring;
 ```
 
-Update your `src/main/resources/application.properties` with your database credentials and Stripe API Keys:
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/ecommerce_db
-spring.datasource.username=your_mysql_username
-spring.datasource.password=your_mysql_password
-spring.jpa.hibernate.ddl-auto=update
+The `src/main/resources/application.properties` is already configured with defaults, but you can override them via Environment Variables if needed:
+*   `PORT` (Default: 5454)
+*   `DB_HOST` (Default: localhost)
+*   `DB_PORT` (Default: 3306)
+*   `DB_NAME` (Default: ecommerceSpring)
+*   `DB_PASSWORD` (Default: _VarRkshv@123)
 
-# Add your Stripe configuration keys and JWT secret here
-```
+*Note: Your `stripe.secretKey` and JWT secret (`JwtConstant.java`) are already present in the code for testing purposes.*
 
 ### 3. Build and Run the Application
 You can use the included Maven wrapper to build and run the application:
@@ -74,8 +73,8 @@ You can use the included Maven wrapper to build and run the application:
 ./mvnw spring-boot:run
 ```
 
-By default, the server will start on port `8080` (or whatever is configured in the properties file).
-Base API URL will be: `http://localhost:8080/`
+By default, the server will start on port `5454`.
+Base API URL will be: `http://localhost:5454/`
 
 ## 🔐 API Endpoints Overview
 
@@ -87,6 +86,4 @@ The backend uses standard RESTful routing. Example controller routing:
 *   `/api/cart` - Cart management
 *   `/api/orders` - Order placements
 *   `/api/payments` - Stripe payment links
-
-*(Extensive documentation of precise request/response bodies should be captured via tools like Swagger/Postman).*
 
